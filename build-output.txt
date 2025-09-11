@@ -1,0 +1,148 @@
+Build started 9/11/2025 1:27:29 PM.
+     1>Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" on node 1 (Restore target(s)).
+     1>_GetAllRestoreProjectPathItems:
+         Determining projects to restore...
+     1>Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (1) is building "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (1:5) on node 1 (_GenerateRestoreGraphProjectEntry target(s)).
+     1>DownloadDotNetCoreMsiFiles:
+         ≡ƒôª Downloading .NET Core MSI files for win-x64...
+         pwsh -c "if (!(Test-Path 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-host-9.0.0-win-x64.msi')) { Write-Host 'Downloading dotnet-host...'; try { Invoke-WebRequest -Uri 'https://dotnetcli.azureedge.net/dotnet/Runtime/9.0.0/dotnet-host-9.0.0-win-x64.msi' -OutFile 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-host-9.0.0-win-x64.msi' -UseBasicParsing } catch { Write-Warning \"Failed to download dotnet-host: `$_\" } }"
+         pwsh -c "if (!(Test-Path 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-hostfxr-9.0.0-win-x64.msi')) { Write-Host 'Downloading dotnet-hostfxr...'; try { Invoke-WebRequest -Uri 'https://dotnetcli.azureedge.net/dotnet/Runtime/9.0.0/dotnet-hostfxr-9.0.0-win-x64.msi' -OutFile 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-hostfxr-9.0.0-win-x64.msi' -UseBasicParsing } catch { Write-Warning \"Failed to download dotnet-hostfxr: `$_\" } }"
+         pwsh -c "if (!(Test-Path 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-runtime-9.0.0-win-x64.msi')) { Write-Host 'Downloading dotnet-runtime...'; try { Invoke-WebRequest -Uri 'https://dotnetcli.azureedge.net/dotnet/Runtime/9.0.0/dotnet-runtime-9.0.0-win-x64.msi' -OutFile 'C:\repos\WindowsDesktop\artifacts\obj\bundle\Release\dotnet-downloads\dotnet-runtime-9.0.0-win-x64.msi' -UseBasicParsing } catch { Write-Warning \"Failed to download dotnet-runtime: `$_\" } }"
+         Γ£à Downloaded dotnet-host MSI
+         Γ£à Downloaded dotnet-hostfxr MSI
+         Γ£à Downloaded dotnet-runtime MSI
+     1>Done Building Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (_GenerateRestoreGraphProjectEntry target(s)).
+     1>Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (1) is building "C:\repos\WindowsDesktop\src\windowsdesktop\src\sfx\Microsoft.WindowsDesktop.App.Runtime.sfxproj" (2:4) on node 1 (_GenerateProjectRestoreGraph target(s)).
+     2>AddPrunePackageReferences:
+         Loading prune package data from PrunePackageData folder
+         Failed to load prune package data from PrunePackageData folder, loading from targeting packs instead
+         Looking for targeting packs in C:\repos\WindowsDesktop\.dotnet\packs\Microsoft.NETCore.App.Ref
+         Pack directories found: C:\repos\WindowsDesktop\.dotnet\packs\Microsoft.NETCore.App.Ref\10.0.0-rc.1.25411.109
+         C:\repos\WindowsDesktop\.dotnet\packs\Microsoft.NETCore.App.Ref\10.0.0-rc.1.25420.111
+         Found package overrides file C:\repos\WindowsDesktop\.dotnet\packs\Microsoft.NETCore.App.Ref\10.0.0-rc.1.25420.111\data\PackageOverrides.txt
+     2>Done Building Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\sfx\Microsoft.WindowsDesktop.App.Runtime.sfxproj" (_GenerateProjectRestoreGraph target(s)).
+     1>Restore:
+         X.509 certificate chain validation will use the default trust store selected by .NET for code signing.
+         X.509 certificate chain validation will use the default trust store selected by .NET for timestamping.
+         Assets file has not changed. Skipping assets file writing. Path: C:\repos\WindowsDesktop\artifacts\obj\windowsdesktop-runtime\project.assets.json
+         Restored C:\repos\WindowsDesktop\src\windowsdesktop\src\sfx\Microsoft.WindowsDesktop.App.Runtime.sfxproj (in 89 ms).
+         Restoring packages for C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj...
+           CACHE https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/8ea23ec3-b9b2-4976-90d7-7c4a6f529fdc/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           CACHE https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/8ea23ec3-b9b2-4976-90d7-7c4a6f529fdc/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           CACHE https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/8ea23ec3-b9b2-4976-90d7-7c4a6f529fdc/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json
+           GET https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 164ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 171ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/a54510f9-4b2c-4e69-b96a-6096683aaa1f/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 171ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 170ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/d1622942-d16f-48e5-bc83-96f4539e7601/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 171ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/45bacae2-5efb-47c8-91e5-8ec20c22b4f8/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 178ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 182ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.sharedframework.x64.10.0/index.json 185ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/299b99f1-f3f1-4630-81e2-4fb223c52e70/nuget/v3/flat2/vs.redist.common.netcore.sharedhost.x64.10.0/index.json 187ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/1a5f89f6-d8da-4080-b15f-242650c914a8/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 191ms
+           NotFound https://pkgs.dev.azure.com/dnceng/9ee6d478-d288-47f7-aacc-f6e6d082ae6d/_packaging/3698578c-d33d-473f-9ffc-769cfbd11be7/nuget/v3/flat2/vs.redist.common.netcore.hostfxr.x64.10.0/index.json 250ms
+     1>C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.SharedFramework.x64.10.0 with version (= 9.0.0)
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+     1>C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.HostFXR.x64.10.0 with version (= 9.0.0)
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+     1>C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.SharedHost.x64.10.0 with version (= 9.0.0)
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+           CACHE https://api.nuget.org/v3/vulnerabilities/index.json
+           CACHE https://api.nuget.org/v3-vulnerabilities/2025.09.11.05.20.35/vulnerability.base.json
+           CACHE https://api.nuget.org/v3-vulnerabilities/2025.09.11.05.20.35/2025.09.11.17.20.36/vulnerability.update.json
+         Assets file has not changed. Skipping assets file writing. Path: C:\repos\WindowsDesktop\artifacts\obj\bundle\project.assets.json
+         Failed to restore C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj (in 747 ms).
+         
+         NuGet Config files used:
+             C:\repos\WindowsDesktop\NuGet.Config
+             C:\Users\mmcgaw\AppData\Roaming\NuGet\NuGet.Config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.FallbackLocation.config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.Offline.config
+         
+         Feeds used:
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9-transport/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet10/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet10-transport/nuget/v3/index.json
+             https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json
+         1 of 2 projects are up-to-date for restore.
+     1>Done Building Project "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (Restore target(s)) -- FAILED.
+
+Build FAILED.
+
+       "C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj" (Restore target) (1) ->
+       (Restore target) -> 
+         C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.SharedFramework.x64.10.0 with version (= 9.0.0)
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+         C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.HostFXR.x64.10.0 with version (= 9.0.0)
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+         C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102: Unable to find package VS.Redist.Common.NetCore.SharedHost.x64.10.0 with version (= 9.0.0)
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 1419 version(s) in dotnet10-transport [ Nearest version: 10.0.0-alpha.1.24423.8 ]
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-eng
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-public
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet-tools
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet10
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9-transport
+       C:\repos\WindowsDesktop\src\windowsdesktop\src\bundle\bundle.wixproj : error NU1102:   - Found 0 version(s) in dotnet9
+
+    0 Warning(s)
+    3 Error(s)
+
+Time Elapsed 00:00:02.83

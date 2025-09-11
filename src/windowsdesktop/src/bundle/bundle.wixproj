@@ -46,23 +46,89 @@
     <ProjectReference Include="..\sfx\Microsoft.WindowsDesktop.App.Runtime.sfxproj" />
   </ItemGroup>
 
-  <!-- Collect VS insertion packages for .NET Core runtime components -->
+  <!-- Download .NET Core runtime MSI files from official feeds -->
+  <Target Name="DownloadDotNetCoreMsiFiles" BeforeTargets="CollectPackageReferences">
+    <PropertyGroup>
+      <_CurrentArch>$(RuntimeIdentifier.Replace('win-', ''))</_CurrentArch>
+      <_DotNetVersion>$(MicrosoftNETCorePlatformsVersion)</_DotNetVersion>
+      <_DotNetBaseUrl>https://dotnetcli.azureedge.net/dotnet</_DotNetBaseUrl>
+      <_DotNetDownloadDir>$(IntermediateOutputPath)dotnet-downloads\</_DotNetDownloadDir>
+      
+      <!-- Check if this is a preview/RC version (contains 'rc' or 'preview') -->
+      <_IsPreviewVersion Condition="$(_DotNetVersion.Contains('-rc')) OR $(_DotNetVersion.Contains('-preview'))">true</_IsPreviewVersion>
+      <_IsPreviewVersion Condition="'$(_IsPreviewVersion)' == ''">false</_IsPreviewVersion>
+    </PropertyGroup>
+
+    <!-- Create download directory -->
+    <MakeDir Directories="$(_DotNetDownloadDir)" />
+    
+    <!-- Skip downloads for preview/RC versions (not available on public feeds) -->
+    <Message Text="⚠️ Skipping .NET Core MSI downloads for preview version: $(_DotNetVersion)" 
+             Importance="high" 
+             Condition="'$(_IsPreviewVersion)' == 'true'" />
+
+
+
+    <!-- Download MSI files using PowerShell if they don't exist locally (only for stable versions) -->
+    <Message Text="📦 Downloading .NET Core MSI files for $(RuntimeIdentifier)..." 
+             Importance="high" 
+             Condition="'$(_IsPreviewVersion)' == 'false'" />
+    
+    <!-- Download Host MSI -->
+    <Exec Command="pwsh -c &quot;if (!(Test-Path '$(_DotNetDownloadDir)dotnet-host-$(_DotNetVersion)-$(RuntimeIdentifier).msi')) { Write-Host 'Downloading dotnet-host...'; try { Invoke-WebRequest -Uri '$(_DotNetBaseUrl)/Runtime/$(_DotNetVersion)/dotnet-host-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -OutFile '$(_DotNetDownloadDir)dotnet-host-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -UseBasicParsing } catch { Write-Warning \&quot;Failed to download dotnet-host: `$_\&quot; } }&quot;"
+          Condition="'$(_IsPreviewVersion)' == 'false'"
+          ContinueOnError="true" />
+    
+    <!-- Download HostFxr MSI -->
+    <Exec Command="pwsh -c &quot;if (!(Test-Path '$(_DotNetDownloadDir)dotnet-hostfxr-$(_DotNetVersion)-$(RuntimeIdentifier).msi')) { Write-Host 'Downloading dotnet-hostfxr...'; try { Invoke-WebRequest -Uri '$(_DotNetBaseUrl)/Runtime/$(_DotNetVersion)/dotnet-hostfxr-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -OutFile '$(_DotNetDownloadDir)dotnet-hostfxr-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -UseBasicParsing } catch { Write-Warning \&quot;Failed to download dotnet-hostfxr: `$_\&quot; } }&quot;"
+          Condition="'$(_IsPreviewVersion)' == 'false'"
+          ContinueOnError="true" />
+    
+    <!-- Download Runtime MSI -->
+    <Exec Command="pwsh -c &quot;if (!(Test-Path '$(_DotNetDownloadDir)dotnet-runtime-$(_DotNetVersion)-$(RuntimeIdentifier).msi')) { Write-Host 'Downloading dotnet-runtime...'; try { Invoke-WebRequest -Uri '$(_DotNetBaseUrl)/Runtime/$(_DotNetVersion)/dotnet-runtime-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -OutFile '$(_DotNetDownloadDir)dotnet-runtime-$(_DotNetVersion)-$(RuntimeIdentifier).msi' -UseBasicParsing } catch { Write-Warning \&quot;Failed to download dotnet-runtime: `$_\&quot; } }&quot;"
+          Condition="'$(_IsPreviewVersion)' == 'false'"
+          ContinueOnError="true" />
+    
+    <!-- Verify downloads completed successfully -->
+    <Message Text="✅ Downloaded dotnet-host MSI" Importance="high" Condition="Exists('$(_DotNetDownloadDir)dotnet-host-$(_DotNetVersion)-$(RuntimeIdentifier).msi')" />
+    <Message Text="✅ Downloaded dotnet-hostfxr MSI" Importance="high" Condition="Exists('$(_DotNetDownloadDir)dotnet-hostfxr-$(_DotNetVersion)-$(RuntimeIdentifier).msi')" />
+    <Message Text="✅ Downloaded dotnet-runtime MSI" Importance="high" Condition="Exists('$(_DotNetDownloadDir)dotnet-runtime-$(_DotNetVersion)-$(RuntimeIdentifier).msi')" />
+    
+    <!-- For preview versions, show what we're doing instead -->
+    <Message Text="📋 Preview version detected - bundle will include WindowsDesktop Runtime only" 
+             Importance="high" 
+             Condition="'$(_IsPreviewVersion)' == 'true'" />
+    <Message Text="   Full .NET Core stack will be resolved by existing VS insertion packages or chained installations" 
+             Importance="high" 
+             Condition="'$(_IsPreviewVersion)' == 'true'" />
+  </Target>
+
+  <!-- Collect VS insertion packages as fallback (keep existing logic) -->
   <Target Name="CollectVSInsertionPackageDownloads" BeforeTargets="CollectPackageReferences">
     <PropertyGroup>
       <_CurrentArch>$(RuntimeIdentifier.Replace('win-', ''))</_CurrentArch>
     </PropertyGroup>
     <ItemGroup>
-      <!-- VS insertion packages for current architecture -->
+      <!-- VS insertion packages for current architecture (fallback) -->
       <PackageDownload Include="VS.Redist.Common.NetCore.SharedFramework.$(_CurrentArch).10.0" Version="[$(MicrosoftNETCorePlatformsVersion)]" />
       <PackageDownload Include="VS.Redist.Common.NetCore.HostFXR.$(_CurrentArch).10.0" Version="[$(MicrosoftNETCorePlatformsVersion)]" />
       <PackageDownload Include="VS.Redist.Common.NetCore.SharedHost.$(_CurrentArch).10.0" Version="[$(MicrosoftNETCorePlatformsVersion)]" />
     </ItemGroup>
   </Target>
 
-  <!-- Locate .NET Core runtime MSI files from build artifacts OR VS insertion packages -->
-  <Target Name="GetBundledNETCoreRuntimeMsiFiles" DependsOnTargets="CollectVSInsertionPackageDownloads" BeforeTargets="SetInstallerInfo">
-    <!-- Check for locally built .NET Core MSI files first -->
+  <!-- Locate .NET Core runtime MSI files from downloaded files, build artifacts, OR VS insertion packages -->
+  <Target Name="GetBundledNETCoreRuntimeMsiFiles" DependsOnTargets="DownloadDotNetCoreMsiFiles;CollectVSInsertionPackageDownloads" BeforeTargets="SetInstallerInfo">
+    <!-- Define all possible MSI file locations in priority order -->
     <PropertyGroup>
+      <_DotNetVersion>$(MicrosoftNETCorePlatformsVersion)</_DotNetVersion>
+      <_DotNetDownloadDir>$(IntermediateOutputPath)dotnet-downloads\</_DotNetDownloadDir>
+      
+      <!-- Priority 1: Downloaded MSI files -->
+      <_DownloadedDotNetRuntimeMsi>$(_DotNetDownloadDir)dotnet-runtime-$(_DotNetVersion)-$(RuntimeIdentifier).msi</_DownloadedDotNetRuntimeMsi>
+      <_DownloadedDotNetHostFxrMsi>$(_DotNetDownloadDir)dotnet-hostfxr-$(_DotNetVersion)-$(RuntimeIdentifier).msi</_DownloadedDotNetHostFxrMsi>
+      <_DownloadedDotNetHostMsi>$(_DotNetDownloadDir)dotnet-host-$(_DotNetVersion)-$(RuntimeIdentifier).msi</_DownloadedDotNetHostMsi>
+      
+      <!-- Priority 2: Check for locally built .NET Core MSI files -->
       <_LocalDotNetRuntimeMsi>$(ArtifactsPackagesDir)Shipping\dotnet-runtime-$(Version)-win-$(TargetArchitecture).msi</_LocalDotNetRuntimeMsi>
       <_LocalDotNetHostFxrMsi>$(ArtifactsPackagesDir)Shipping\dotnet-hostfxr-$(Version)-win-$(TargetArchitecture).msi</_LocalDotNetHostFxrMsi>
       <_LocalDotNetHostMsi>$(ArtifactsPackagesDir)Shipping\dotnet-host-$(Version)-win-$(TargetArchitecture).msi</_LocalDotNetHostMsi>
@@ -82,20 +148,30 @@
       <_LatestSharedHostVersion Condition="'@(_SharedHostPackageVersionDirs)' != ''">$(MicrosoftNETCorePlatformsVersion)</_LatestSharedHostVersion>
     </PropertyGroup>
     
-    <!-- Set paths for MSI files: prefer local build artifacts over NuGet packages -->
+    <!-- Set paths for MSI files: prefer downloaded files > local build artifacts > NuGet packages -->
     <PropertyGroup>
       <_VsInsertionPackageDir Condition="'$(_LatestRuntimeVersion)' != ''">$(NuGetPackageRoot)vs.redist.common.netcore.sharedframework.$(_CurrentArch).10.0\$(_LatestRuntimeVersion)\</_VsInsertionPackageDir>
       <_HostFxrPackageDir Condition="'$(_LatestHostFxrVersion)' != ''">$(NuGetPackageRoot)vs.redist.common.netcore.hostfxr.$(_CurrentArch).10.0\$(_LatestHostFxrVersion)\</_HostFxrPackageDir>
       <_SharedHostPackageDir Condition="'$(_LatestSharedHostVersion)' != ''">$(NuGetPackageRoot)vs.redist.common.netcore.sharedhost.$(_CurrentArch).10.0\$(_LatestSharedHostVersion)\</_SharedHostPackageDir>
       
-      <!-- Try NuGet packages if local files don't exist -->
-      <DotNetRuntimeMsiFromNuGet Condition="!Exists('$(_LocalDotNetRuntimeMsi)') AND '$(_VsInsertionPackageDir)' != '' AND Exists('$(_VsInsertionPackageDir)dotnet-runtime-$(_LatestRuntimeVersion)-$(RuntimeIdentifier).msi')">$(_VsInsertionPackageDir)dotnet-runtime-$(_LatestRuntimeVersion)-$(RuntimeIdentifier).msi</DotNetRuntimeMsiFromNuGet>
-      <DotNetHostFxrMsiFromNuGet Condition="!Exists('$(_LocalDotNetHostFxrMsi)') AND '$(_HostFxrPackageDir)' != '' AND Exists('$(_HostFxrPackageDir)dotnet-hostfxr-$(_LatestHostFxrVersion)-$(RuntimeIdentifier).msi')">$(_HostFxrPackageDir)dotnet-hostfxr-$(_LatestHostFxrVersion)-$(RuntimeIdentifier).msi</DotNetHostFxrMsiFromNuGet>
-      <DotNetHostMsiFromNuGet Condition="!Exists('$(_LocalDotNetHostMsi)') AND '$(_SharedHostPackageDir)' != '' AND Exists('$(_SharedHostPackageDir)dotnet-host-$(_LatestSharedHostVersion)-$(RuntimeIdentifier).msi')">$(_SharedHostPackageDir)dotnet-host-$(_LatestSharedHostVersion)-$(RuntimeIdentifier).msi</DotNetHostMsiFromNuGet>
+      <!-- Priority 3: Try NuGet packages if local files and downloads don't exist -->
+      <DotNetRuntimeMsiFromNuGet Condition="!Exists('$(_DownloadedDotNetRuntimeMsi)') AND !Exists('$(_LocalDotNetRuntimeMsi)') AND '$(_VsInsertionPackageDir)' != '' AND Exists('$(_VsInsertionPackageDir)dotnet-runtime-$(_LatestRuntimeVersion)-$(RuntimeIdentifier).msi')">$(_VsInsertionPackageDir)dotnet-runtime-$(_LatestRuntimeVersion)-$(RuntimeIdentifier).msi</DotNetRuntimeMsiFromNuGet>
+      <DotNetHostFxrMsiFromNuGet Condition="!Exists('$(_DownloadedDotNetHostFxrMsi)') AND !Exists('$(_LocalDotNetHostFxrMsi)') AND '$(_HostFxrPackageDir)' != '' AND Exists('$(_HostFxrPackageDir)dotnet-hostfxr-$(_LatestHostFxrVersion)-$(RuntimeIdentifier).msi')">$(_HostFxrPackageDir)dotnet-hostfxr-$(_LatestHostFxrVersion)-$(RuntimeIdentifier).msi</DotNetHostFxrMsiFromNuGet>
+      <DotNetHostMsiFromNuGet Condition="!Exists('$(_DownloadedDotNetHostMsi)') AND !Exists('$(_LocalDotNetHostMsi)') AND '$(_SharedHostPackageDir)' != '' AND Exists('$(_SharedHostPackageDir)dotnet-host-$(_LatestSharedHostVersion)-$(RuntimeIdentifier).msi')">$(_SharedHostPackageDir)dotnet-host-$(_LatestSharedHostVersion)-$(RuntimeIdentifier).msi</DotNetHostMsiFromNuGet>
     </PropertyGroup>
   </Target>
 
   <Target Name="SetInstallerInfo" BeforeTargets="CoreCompile" DependsOnTargets="GetBundledNETCoreRuntimeMsiFiles">
+    <!-- Debug output for MSI detection -->
+    <Message Text="🔍 MSI Detection Results:" Importance="high" />
+    <Message Text="  DotNetRuntimeMsiPath: $(DotNetRuntimeMsiPath)" Importance="high" />
+    <Message Text="  DotNetHostFxrMsiPath: $(DotNetHostFxrMsiPath)" Importance="high" />  
+    <Message Text="  DotNetHostMsiPath: $(DotNetHostMsiPath)" Importance="high" />
+    <Message Text="  WindowsDesktopRuntimeMsiPath: $(WindowsDesktopRuntimeMsiPath)" Importance="high" />
+    <Message Text="  DotNetRuntimeMsiExists: $([System.IO.File]::Exists('$(DotNetRuntimeMsiPath)'))" Importance="high" />
+    <Message Text="  DotNetHostFxrMsiExists: $([System.IO.File]::Exists('$(DotNetHostFxrMsiPath)'))" Importance="high" />
+    <Message Text="  DotNetHostMsiExists: $([System.IO.File]::Exists('$(DotNetHostMsiPath)'))" Importance="high" />
+
     <PropertyGroup>
       <!-- Essential bundle metadata -->
       <DefineConstants>$(DefineConstants);Version=$(MajorVersion).$(MinorVersion).$(PatchVersion)</DefineConstants>
@@ -121,13 +197,22 @@
       <DefineConstants>$(DefineConstants);AspNetCoreVersion=$(AspNetCoreVersion)</DefineConstants>
       <DefineConstants>$(DefineConstants);MinimumVSVersion=$(MinimumVSVersion)</DefineConstants>
 
-      <!-- MSI paths: prefer local build artifacts, then fall back to VS insertion packages -->
+      <!-- MSI paths: prefer downloaded files > local build artifacts > VS insertion packages -->
       <WindowsDesktopRuntimeMsiPath>$(ArtifactsPackagesDir)Shipping\windowsdesktop-runtime-$(Version)-win-$(TargetArchitecture).msi</WindowsDesktopRuntimeMsiPath>
-      <DotNetRuntimeMsiPath Condition="Exists('$(_LocalDotNetRuntimeMsi)')">$(_LocalDotNetRuntimeMsi)</DotNetRuntimeMsiPath>
+      
+      <!-- .NET Runtime MSI path resolution -->
+      <DotNetRuntimeMsiPath Condition="Exists('$(_DownloadedDotNetRuntimeMsi)')">$(_DownloadedDotNetRuntimeMsi)</DotNetRuntimeMsiPath>
+      <DotNetRuntimeMsiPath Condition="'$(DotNetRuntimeMsiPath)' == '' AND Exists('$(_LocalDotNetRuntimeMsi)')">$(_LocalDotNetRuntimeMsi)</DotNetRuntimeMsiPath>
       <DotNetRuntimeMsiPath Condition="'$(DotNetRuntimeMsiPath)' == '' AND '$(DotNetRuntimeMsiFromNuGet)' != ''">$(DotNetRuntimeMsiFromNuGet)</DotNetRuntimeMsiPath>
-      <DotNetHostFxrMsiPath Condition="Exists('$(_LocalDotNetHostFxrMsi)')">$(_LocalDotNetHostFxrMsi)</DotNetHostFxrMsiPath>
+      
+      <!-- .NET HostFxr MSI path resolution -->
+      <DotNetHostFxrMsiPath Condition="Exists('$(_DownloadedDotNetHostFxrMsi)')">$(_DownloadedDotNetHostFxrMsi)</DotNetHostFxrMsiPath>
+      <DotNetHostFxrMsiPath Condition="'$(DotNetHostFxrMsiPath)' == '' AND Exists('$(_LocalDotNetHostFxrMsi)')">$(_LocalDotNetHostFxrMsi)</DotNetHostFxrMsiPath>
       <DotNetHostFxrMsiPath Condition="'$(DotNetHostFxrMsiPath)' == '' AND '$(DotNetHostFxrMsiFromNuGet)' != ''">$(DotNetHostFxrMsiFromNuGet)</DotNetHostFxrMsiPath>
-      <DotNetHostMsiPath Condition="Exists('$(_LocalDotNetHostMsi)')">$(_LocalDotNetHostMsi)</DotNetHostMsiPath>
+      
+      <!-- .NET Host MSI path resolution -->
+      <DotNetHostMsiPath Condition="Exists('$(_DownloadedDotNetHostMsi)')">$(_DownloadedDotNetHostMsi)</DotNetHostMsiPath>
+      <DotNetHostMsiPath Condition="'$(DotNetHostMsiPath)' == '' AND Exists('$(_LocalDotNetHostMsi)')">$(_LocalDotNetHostMsi)</DotNetHostMsiPath>
       <DotNetHostMsiPath Condition="'$(DotNetHostMsiPath)' == '' AND '$(DotNetHostMsiFromNuGet)' != ''">$(DotNetHostMsiFromNuGet)</DotNetHostMsiPath>
       
       <!-- Pass MSI paths and existence flags to WiX -->
